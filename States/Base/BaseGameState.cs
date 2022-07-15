@@ -12,11 +12,27 @@ namespace MonoGameLearning.States.Base
 {
     public abstract class BaseGameState
     {
+        private const string FallbackTexture = "Empty";
+        private ContentManager _contentManager;
         private readonly List<BaseGameObject> _gameObjects = new List<BaseGameObject>();
+        public void Initialize(ContentManager contentManager)
+        {
+            _contentManager = contentManager;
+        }
 
-        public abstract void LoadContent(ContentManager contentManager);
+        public abstract void LoadContent();
 
-        public abstract void UnloadContent(ContentManager contentManager);
+        public void UnloadContent()
+        {
+            _contentManager.Unload();
+        }
+
+        // public abstract void UnloadContent(ContentManager contentManager);
+        protected Texture2D LoadTexture(string textureName)
+        {
+            var texture = _contentManager.Load<Texture2D>(textureName);
+            return texture ?? _contentManager.Load<Texture2D>(FallbackTexture);
+        }
 
         public abstract void HandleInput();
 
