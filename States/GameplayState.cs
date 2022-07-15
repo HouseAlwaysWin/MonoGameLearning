@@ -12,11 +12,18 @@ namespace MonoGameLearning.States
 
         private const string PlayerFighter = "fighter";
         private const string BackgroundTexture = "Barren";
+        private PlayerSprite _playerSprite;
 
         public override void LoadContent()
         {
-            AddGameObject(new SplashImage(LoadTexture(BackgroundTexture)));
-            AddGameObject(new PlayerSprite(LoadTexture(PlayerFighter)));
+            _playerSprite = new PlayerSprite(LoadTexture(PlayerFighter));
+
+            AddGameObject(new TerrainBackground(LoadTexture(BackgroundTexture)));
+
+            var playerXPos = _viewportWidth / 2 - _playerSprite.Width / 2;
+            var playerYPos = _viewportHeight - _playerSprite.Height - 30;
+            _playerSprite.Position = new Vector2(playerXPos, playerYPos);
+
         }
 
         public override void HandleInput()

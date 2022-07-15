@@ -99,7 +99,9 @@ namespace MonoGameLearning
 
             _currentGameState = gameState;
 
-            _currentGameState.Initialize(Content);
+            _currentGameState.Initialize(Content,
+                        _graphics.GraphicsDevice.Viewport.Width,
+                        _graphics.GraphicsDevice.Viewport.Height);
 
             _currentGameState.LoadContent();
 
