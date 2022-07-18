@@ -125,11 +125,10 @@ namespace MonoGameLearning
             _currentGameState?.UnloadContent();
         }
 
-
         protected override void Update(GameTime gameTime)
         {
-            _currentGameState.HandleInput();
-
+            _currentGameState.HandleInput(gameTime);
+            _currentGameState.Update(gameTime);
             base.Update(gameTime);
         }
 

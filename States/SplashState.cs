@@ -17,7 +17,7 @@ namespace MonoGameLearning.States.Base
             AddGameObject(new SplashImage(LoadTexture("splash")));
         }
 
-        public override void HandleInput()
+        public override void HandleInput(GameTime gameTime)
         {
             var state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Enter))

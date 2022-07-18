@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoGameLearning.Enum;
 using MonoGameLearning.Input.Base;
 using MonoGameLearning.Objects.Base;
+using Microsoft.Xna.Framework;
 
 namespace MonoGameLearning.States.Base
 {
@@ -31,11 +32,17 @@ namespace MonoGameLearning.States.Base
         }
 
         public abstract void LoadContent();
+        public virtual void Update(GameTime gameTime) { }
         public abstract void SetInputManager();
 
         public void UnloadContent()
         {
             _contentManager.Unload();
+        }
+
+        protected void RemoveGameObject(BaseGameObject gameObject)
+        {
+            _gameObjects.Remove(gameObject);
         }
 
         // public abstract void UnloadContent(ContentManager contentManager);
@@ -45,7 +52,7 @@ namespace MonoGameLearning.States.Base
             return texture ?? _contentManager.Load<Texture2D>(FallbackTexture);
         }
 
-        public abstract void HandleInput();
+        public abstract void HandleInput(GameTime gameTime);
 
         public event EventHandler<BaseGameState> OnStateSwitched;
 
