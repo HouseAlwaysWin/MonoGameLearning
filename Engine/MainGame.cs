@@ -18,32 +18,39 @@ namespace MonoGameLearning
         private RenderTarget2D _renderTarget;
         private Rectangle _renderScaleRectangle;
 
-        private const int DESIGNED_RESOLUTION_WIDTH = 1280;
-        private const int DESIGNED_RESOLUTION_HEIGHT = 720;
+        private int _designedResolutionWidth;
+        private int _designedResolutionHeight;
 
-        private const float DESIGN_RESOLUTION_ASPECT_RATIO = DESIGNED_RESOLUTION_WIDTH / (float)DESIGNED_RESOLUTION_HEIGHT;
+        private float _designedResolutionAspectRadio;
 
-        public MainGame()
+        private BaseGameState _firstGameState;
+
+        public MainGame(int width, int height, BaseGameState firstGameState)
         {
 
             _graphics = new GraphicsDeviceManager(this);
 
             // _graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
-            IsMouseVisible = true;
+            // IsMouseVisible = true;
+
+            _firstGameState = firstGameState;
+            _designedResolutionHeight = height;
+            _designedResolutionWidth = width;
+            _designedResolutionAspectRadio = width / (float)height;
         }
 
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferWidth = DESIGNED_RESOLUTION_WIDTH;
-            _graphics.PreferredBackBufferHeight = DESIGNED_RESOLUTION_HEIGHT;
+            _graphics.PreferredBackBufferWidth = _designedResolutionWidth;
+            _graphics.PreferredBackBufferHeight = _designedResolutionHeight;
             _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             _renderTarget = new RenderTarget2D(
                 graphicsDevice: _graphics.GraphicsDevice,
-                width: DESIGNED_RESOLUTION_WIDTH,
-                height: DESIGNED_RESOLUTION_HEIGHT,
+                width: _designedResolutionWidth,
+                height: _designedResolutionHeight,
                 mipMap: false,
                 preferredFormat: SurfaceFormat.Color,
                 preferredDepthFormat: DepthFormat.None,
@@ -60,15 +67,15 @@ namespace MonoGameLearning
             var variance = 0.5;
             var actualAspectRatio = Window.ClientBounds.Width / (float)Window.ClientBounds.Height;
             Rectangle scaleRectangle;
-            if (actualAspectRatio <= DESIGN_RESOLUTION_ASPECT_RATIO)
+            if (actualAspectRatio <= _designedResolutionAspectRadio)
             {
-                var presentHeight = (int)(Window.ClientBounds.Width / DESIGN_RESOLUTION_ASPECT_RATIO + variance);
+                var presentHeight = (int)(Window.ClientBounds.Width / _designedResolutionAspectRadio + variance);
                 var barHeight = (Window.ClientBounds.Height - presentHeight) / 2;
                 scaleRectangle = new Rectangle(0, barHeight, Window.ClientBounds.Width, presentHeight);
             }
             else
             {
-                var presentWidth = (int)(Window.ClientBounds.Height * DESIGN_RESOLUTION_ASPECT_RATIO + variance);
+                var presentWidth = (int)(Window.ClientBounds.Height * _designedResolutionAspectRadio + variance);
                 var barWidth = (Window.ClientBounds.Width - presentWidth) / 2;
                 scaleRectangle = new Rectangle(0, barWidth, Window.ClientBounds.Width, Window.ClientBounds.Height);
             }
@@ -116,9 +123,7 @@ namespace MonoGameLearning
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // SwitchGameState(new SplashState());
-            SwitchGameState(new GameplayState());
+            SwitchGameState(_firstGameState);
         }
 
         protected override void UnloadContent()

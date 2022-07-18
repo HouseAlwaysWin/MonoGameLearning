@@ -42,7 +42,7 @@ namespace MonoGameLearning.States.Gameplay
 
         }
 
-        public override void Update(GameTime gameTime)
+        public override void UpdateGameState(GameTime gameTime)
         {
             foreach (var bullet in _bulletList)
             {

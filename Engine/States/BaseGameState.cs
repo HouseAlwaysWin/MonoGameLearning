@@ -10,6 +10,8 @@ using MonoGameLearning.Enum;
 using MonoGameLearning.Objects.Base;
 using Microsoft.Xna.Framework;
 using MonoGameLearning.Engine.Input;
+using Microsoft.Xna.Framework.Audio;
+using MonoGameLearning.Engine.Sound;
 
 namespace MonoGameLearning.Engine.States
 {
@@ -19,6 +21,7 @@ namespace MonoGameLearning.Engine.States
         private ContentManager _contentManager;
         protected int _viewportHeight;
         protected int _viewportWidth;
+        protected SoundManager _soundManager = new SoundManager();
         private readonly List<BaseGameObject> _gameObjects = new List<BaseGameObject>();
 
         protected InputManager InputManager { get; set; }
@@ -32,7 +35,12 @@ namespace MonoGameLearning.Engine.States
         }
 
         public abstract void LoadContent();
-        public virtual void Update(GameTime gameTime) { }
+        public abstract void UpdateGameState(GameTime gameTime);
+        public void Update(GameTime gameTime)
+        {
+            UpdateGameState(gameTime);
+            _soundManager.PlaySoundtrack();
+        }
         public abstract void SetInputManager();
 
         public void UnloadContent()
@@ -50,6 +58,11 @@ namespace MonoGameLearning.Engine.States
         {
             var texture = _contentManager.Load<Texture2D>(textureName);
             return texture ?? _contentManager.Load<Texture2D>(FallbackTexture);
+        }
+
+        protected SoundEffect LoadSound(string soundName)
+        {
+            return _contentManager.Load<SoundEffect>(soundName);
         }
 
         public abstract void HandleInput(GameTime gameTime);

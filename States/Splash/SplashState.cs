@@ -32,5 +32,10 @@ namespace MonoGameLearning.Splash.Gameplay
         {
             InputManager = new InputManager(new SplashInputMapper());
         }
+
+        public override void UpdateGameState(GameTime gameTime)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
