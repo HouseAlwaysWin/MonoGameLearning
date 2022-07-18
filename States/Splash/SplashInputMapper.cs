@@ -1,8 +1,8 @@
-using MonoGameLearning.Input.Base;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLearning.Engine.Input;
 using System.Collections.Generic;
 
-namespace MonoGameLearning.Input
+namespace MonoGameLearning.Splash.Gameplay
 {
     public class SplashInputMapper : BaseInputMapper
     {

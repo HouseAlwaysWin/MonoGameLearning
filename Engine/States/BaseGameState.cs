@@ -7,11 +7,11 @@ using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLearning.Enum;
-using MonoGameLearning.Input.Base;
 using MonoGameLearning.Objects.Base;
 using Microsoft.Xna.Framework;
+using MonoGameLearning.Engine.Input;
 
-namespace MonoGameLearning.States.Base
+namespace MonoGameLearning.Engine.States
 {
     public abstract class BaseGameState
     {

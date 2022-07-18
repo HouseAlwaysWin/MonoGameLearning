@@ -1,6 +1,7 @@
-using MonoGameLearning.Input.Base;
 
-namespace MonoGameLearning.Input
+using MonoGameLearning.Engine.Input;
+
+namespace MonoGameLearning.Splash.Gameplay
 {
     public class SplashInputCommand : BaseInputCommand
     {

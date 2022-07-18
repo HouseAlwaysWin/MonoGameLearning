@@ -1,9 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLearning.Engine.States;
 using MonoGameLearning.Enum;
 using MonoGameLearning.States;
-using MonoGameLearning.States.Base;
+using MonoGameLearning.States.Gameplay;
 
 namespace MonoGameLearning
 {

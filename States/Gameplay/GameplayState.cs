@@ -4,14 +4,14 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MMonoGameLearning.States.Gameplay;
+using MonoGameLearning.Engine.Input;
+using MonoGameLearning.Engine.States;
 using MonoGameLearning.Enum;
-using MonoGameLearning.Input;
-using MonoGameLearning.Input.Base;
 using MonoGameLearning.Objects;
 using MonoGameLearning.Objects.Base;
-using MonoGameLearning.States.Base;
 
-namespace MonoGameLearning.States
+namespace MonoGameLearning.States.Gameplay
 {
     public class GameplayState : BaseGameState
     {
@@ -74,7 +74,7 @@ namespace MonoGameLearning.States
             _bulletList = newBulletList;
         }
 
-     
+
 
         public override void HandleInput(GameTime gameTime)
         {

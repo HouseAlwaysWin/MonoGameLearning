@@ -1,7 +1,8 @@
 
-using MonoGameLearning.Input.Base;
 
-namespace MonoGameLearning.Input
+using MonoGameLearning.Engine.Input;
+
+namespace MonoGameLearning.States.Gameplay
 {
     public class GameplayInputCommand : BaseInputCommand
     {

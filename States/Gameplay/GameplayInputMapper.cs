@@ -1,9 +1,10 @@
 
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
-using MonoGameLearning.Input.Base;
+using MonoGameLearning.Engine.Input;
+using MonoGameLearning.States.Gameplay;
 
-namespace MonoGameLearning.Input
+namespace MMonoGameLearning.States.Gameplay
 {
     public class GameplayInputMapper : BaseInputMapper
     {

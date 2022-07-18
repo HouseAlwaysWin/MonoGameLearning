@@ -2,11 +2,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGameLearning.Input;
-using MonoGameLearning.Input.Base;
+using MonoGameLearning.Engine.Input;
+using MonoGameLearning.Engine.States;
 using MonoGameLearning.Objects;
+using MonoGameLearning.States.Gameplay;
 
-namespace MonoGameLearning.States.Base
+namespace MonoGameLearning.Splash.Gameplay
 {
     public class SplashState : BaseGameState
     {

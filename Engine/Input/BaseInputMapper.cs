@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
-namespace MonoGameLearning.Input.Base
+namespace MonoGameLearning.Engine.Input
 {
     public class BaseInputMapper
     {
