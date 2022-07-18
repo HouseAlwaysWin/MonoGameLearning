@@ -1,3 +1,4 @@
+using System.Security.Authentication.ExtendedProtection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLearning.Enum;
+using MonoGameLearning.Input.Base;
 using MonoGameLearning.Objects.Base;
 
 namespace MonoGameLearning.States.Base
@@ -17,14 +19,19 @@ namespace MonoGameLearning.States.Base
         protected int _viewportHeight;
         protected int _viewportWidth;
         private readonly List<BaseGameObject> _gameObjects = new List<BaseGameObject>();
+
+        protected InputManager InputManager { get; set; }
+
         public void Initialize(ContentManager contentManager, int viewportHeight, int viewportWidth)
         {
             _contentManager = contentManager;
             _viewportHeight = viewportHeight;
             _viewportWidth = viewportWidth;
+            SetInputManager();
         }
 
         public abstract void LoadContent();
+        public abstract void SetInputManager();
 
         public void UnloadContent()
         {
@@ -43,6 +50,7 @@ namespace MonoGameLearning.States.Base
         public event EventHandler<BaseGameState> OnStateSwitched;
 
         public event EventHandler<Events> OnEventNotification;
+
 
         protected void NotifyEvent(Events eventType, object argument = null)
         {

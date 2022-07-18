@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGameLearning.Enum;
+using MonoGameLearning.States;
 using MonoGameLearning.States.Base;
 
 namespace MonoGameLearning
@@ -73,6 +74,27 @@ namespace MonoGameLearning
             return scaleRectangle;
         }
 
+        private void SwitchGameState(BaseGameState gameState)
+        {
+            if (_currentGameState != null)
+            {
+                _currentGameState.OnStateSwitched -= CurrentGameState_OnStateSwitched;
+                _currentGameState.OnEventNotification -= _currentGameState_OnEventNotification;
+                _currentGameState.UnloadContent();
+            }
+
+            _currentGameState = gameState;
+
+            _currentGameState.Initialize(Content,
+                        _graphics.GraphicsDevice.Viewport.Height,
+                        _graphics.GraphicsDevice.Viewport.Width);
+
+            _currentGameState.LoadContent();
+
+            _currentGameState.OnStateSwitched += CurrentGameState_OnStateSwitched;
+            _currentGameState.OnEventNotification += _currentGameState_OnEventNotification;
+        }
+
         private void CurrentGameState_OnStateSwitched(object sender, BaseGameState e)
         {
             SwitchGameState(e);
@@ -88,32 +110,14 @@ namespace MonoGameLearning
             }
         }
 
-        private void SwitchGameState(BaseGameState gameState)
-        {
-            if (_currentGameState != null)
-            {
-                _currentGameState.OnStateSwitched -= CurrentGameState_OnStateSwitched;
-                _currentGameState.OnEventNotification -= _currentGameState_OnEventNotification;
-                _currentGameState.UnloadContent();
-            }
 
-            _currentGameState = gameState;
-
-            _currentGameState.Initialize(Content,
-                        _graphics.GraphicsDevice.Viewport.Width,
-                        _graphics.GraphicsDevice.Viewport.Height);
-
-            _currentGameState.LoadContent();
-
-            _currentGameState.OnStateSwitched += CurrentGameState_OnStateSwitched;
-            _currentGameState.OnEventNotification += _currentGameState_OnEventNotification;
-        }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            SwitchGameState(new SplashState());
+            // SwitchGameState(new SplashState());
+            SwitchGameState(new GameplayState());
         }
 
         protected override void UnloadContent()

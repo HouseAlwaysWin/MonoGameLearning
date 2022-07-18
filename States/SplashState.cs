@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGameLearning.Input;
+using MonoGameLearning.Input.Base;
 using MonoGameLearning.Objects;
 
 namespace MonoGameLearning.States.Base
@@ -23,11 +25,11 @@ namespace MonoGameLearning.States.Base
 
                 SwitchState(new GameplayState());
             }
+        }
 
-            // if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
-            //     Keyboard.GetState().IsKeyDown(Keys.Enter))
-            // {
-            // }
+        public override void SetInputManager()
+        {
+            InputManager = new InputManager(new SplashInputMapper());
         }
     }
 }

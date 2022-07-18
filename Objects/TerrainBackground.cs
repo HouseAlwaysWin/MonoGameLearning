@@ -13,6 +13,10 @@ namespace MonoGameLearning.Objects
             _position = new Vector2(0, 0);
         }
 
+        /// <summary>
+        /// 背景不斷移動
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Render(SpriteBatch spriteBatch)
         {
             var viewport = spriteBatch.GraphicsDevice.Viewport;
