@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -16,9 +17,9 @@ namespace MonoGameLearning.States.Gameplay
     public class GameplayState : BaseGameState
     {
 
-        private const string PlayerFighter = "fighter";
-        private const string BulletTexture = "bullet";
-        private const string BackgroundTexture = "Barren";
+        private const string PlayerFighter = "png/Fighter";
+        private const string BulletTexture = "png/bullet";
+        private const string BackgroundTexture = "png/Barren";
         private PlayerSprite _playerSprite;
         // private BulletSprite _bulletSprite;
         private Texture2D _bulletTexture;
@@ -40,6 +41,12 @@ namespace MonoGameLearning.States.Gameplay
 
             _playerSprite.Position = new Vector2(playerXPos, playerYPos);
 
+            var bulletSound = LoadSound("sounds/bullet");
+            _soundManager.RegisterSound(new GameplayEvents.PlayerShoots(), bulletSound);
+
+            var track1 = LoadSound("music/FutureAmbient_1").CreateInstance();
+            var track2 = LoadSound("music/FutureAmbient_2").CreateInstance();
+            _soundManager.SetSoundtrack(new List<SoundEffectInstance>() { track1, track2 });
         }
 
         public override void UpdateGameState(GameTime gameTime)
@@ -82,7 +89,7 @@ namespace MonoGameLearning.States.Gameplay
             {
                 if (cmd is GameplayInputCommand.GameExit)
                 {
-                    NotifyEvent(Events.GAME_QUIT);
+                    NotifyEvent(new BaseGameStateEvent.GameQuit());
                 }
 
                 if (cmd is GameplayInputCommand.PlayerMoveLeft)
@@ -112,7 +119,9 @@ namespace MonoGameLearning.States.Gameplay
                 CreateBullets();
                 _isShooting = true;
                 _lastShotAt = gameTime.TotalGameTime;
+                NotifyEvent(new GameplayEvents.PlayerShoots());
             }
+
         }
 
         private void CreateBullets()

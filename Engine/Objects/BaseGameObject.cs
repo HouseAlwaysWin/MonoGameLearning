@@ -1,6 +1,7 @@
 using MonoGameLearning.Enum;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoGameLearning.Engine.States;
 
 namespace MonoGameLearning.Objects.Base
 {
@@ -18,7 +19,7 @@ namespace MonoGameLearning.Objects.Base
             get { return _position; }
             set { _position = value; }
         }
-        public virtual void OnNotify(Events eventType) { }
+        public virtual void OnNotify(BaseGameStateEvent eventType) { }
 
         public virtual void Render(SpriteBatch spriteBatch)
         {

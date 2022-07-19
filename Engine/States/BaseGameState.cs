@@ -69,17 +69,18 @@ namespace MonoGameLearning.Engine.States
 
         public event EventHandler<BaseGameState> OnStateSwitched;
 
-        public event EventHandler<Events> OnEventNotification;
+        public event EventHandler<BaseGameStateEvent> OnEventNotification;
 
 
-        protected void NotifyEvent(Events eventType, object argument = null)
+        protected void NotifyEvent(BaseGameStateEvent gameEvent)
         {
-            OnEventNotification?.Invoke(this, eventType);
+            OnEventNotification?.Invoke(this, gameEvent);
 
             foreach (var gameObject in _gameObjects)
             {
-                gameObject.OnNotify(eventType);
+                gameObject.OnNotify(gameEvent);
             }
+            _soundManager.OnNotify(gameEvent);
         }
 
         protected void SwitchState(BaseGameState gameState)

@@ -108,11 +108,11 @@ namespace MonoGameLearning
             SwitchGameState(e);
         }
 
-        private void _currentGameState_OnEventNotification(object sender, Enum.Events e)
+        private void _currentGameState_OnEventNotification(object sender, BaseGameStateEvent e)
         {
             switch (e)
             {
-                case Events.GAME_QUIT:
+                case BaseGameStateEvent.GameQuit _:
                     Exit();
                     break;
             }
