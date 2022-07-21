@@ -20,18 +20,29 @@ namespace MonoGameLearning.States.Gameplay
         private const string PlayerFighter = "png/Fighter";
         private const string BulletTexture = "png/bullet";
         private const string BackgroundTexture = "png/Barren";
+        private const string ExhaustTexture = "png/Cloud001";
+        private const string MissileTexture = "png/Missile05";
         private PlayerSprite _playerSprite;
         // private BulletSprite _bulletSprite;
         private Texture2D _bulletTexture;
         private List<BulletSprite> _bulletList;
-        private bool _isShooting;
-        private TimeSpan _lastShotAt;
+        private Texture2D _missileTexture;
+        private Texture2D _exhaustTexture;
+        private bool _isShootingMissile;
+        private List<MissileSprite> _missileList;
+        private bool _isShootingBullets;
+        private TimeSpan _lastBulletShotAt;
+        private TimeSpan _lastMissileShotAt;
 
         public override void LoadContent()
         {
             _playerSprite = new PlayerSprite(LoadTexture(PlayerFighter));
             _bulletTexture = LoadTexture(BulletTexture);
             _bulletList = new List<BulletSprite>();
+            _missileList = new List<MissileSprite>();
+            _missileTexture = LoadTexture(MissileTexture);
+            _exhaustTexture = LoadTexture(ExhaustTexture);
+
 
             AddGameObject(new TerrainBackground(LoadTexture(BackgroundTexture)));
             AddGameObject(_playerSprite);
@@ -42,11 +53,15 @@ namespace MonoGameLearning.States.Gameplay
             _playerSprite.Position = new Vector2(playerXPos, playerYPos);
 
             var bulletSound = LoadSound("sounds/bullet");
-            _soundManager.RegisterSound(new GameplayEvents.PlayerShoots(), bulletSound);
+            _soundManager.RegisterSound(new GameplayEvents.PlayerShootsBullets(), bulletSound);
+
+            var missileSound = LoadSound("sounds/missile");
+            _soundManager.RegisterSound(new GameplayEvents.PlayerShootsMissile(), missileSound, 0.4f, -0.2f, 0.0f);
 
             var track1 = LoadSound("music/FutureAmbient_1").CreateInstance();
             var track2 = LoadSound("music/FutureAmbient_2").CreateInstance();
             _soundManager.SetSoundtrack(new List<SoundEffectInstance>() { track1, track2 });
+
         }
 
         public override void UpdateGameState(GameTime gameTime)
@@ -56,29 +71,24 @@ namespace MonoGameLearning.States.Gameplay
                 bullet.MoveUp();
             }
 
-            // can't shoot more than every 0.2 seconds
-            if (_lastShotAt != null && gameTime.TotalGameTime - _lastShotAt > TimeSpan.FromSeconds(0.2))
+            foreach (var missile in _missileList)
             {
-                _isShooting = false;
+                missile.Update(gameTime);
+            }
+            // can't shoot bullets more than every 0.2 second
+            if (_lastBulletShotAt != null && gameTime.TotalGameTime - _lastBulletShotAt > TimeSpan.FromSeconds(0.2))
+            {
+                _isShootingBullets = false;
             }
 
-            // get rid of bullets that have gone out of view
-            var newBulletList = new List<BulletSprite>();
-            foreach (var bullet in _bulletList)
+            // can't shoot missiles more than every 1 second
+            if (_lastMissileShotAt != null && gameTime.TotalGameTime - _lastMissileShotAt > TimeSpan.FromSeconds(1.0))
             {
-                var bulletStillOnScreen = bullet.Position.Y > -30;
-
-                if (bulletStillOnScreen)
-                {
-                    newBulletList.Add(bullet);
-                }
-                else
-                {
-                    RemoveGameObject(bullet);
-                }
+                _isShootingMissile = false;
             }
 
-            _bulletList = newBulletList;
+            _bulletList = CleanObjects(_bulletList);
+            _missileList = CleanObjects(_missileList);
         }
 
 
@@ -112,14 +122,44 @@ namespace MonoGameLearning.States.Gameplay
 
         }
 
+        private List<T> CleanObjects<T>(List<T> objectList) where T : BaseGameObject
+        {
+            List<T> listOfItemsToKeep = new List<T>();
+            foreach (T item in objectList)
+            {
+                var stillOnScreen = item.Position.Y > -50;
+
+                if (stillOnScreen)
+                {
+                    listOfItemsToKeep.Add(item);
+                }
+                else
+                {
+                    RemoveGameObject(item);
+                }
+            }
+
+            return listOfItemsToKeep;
+        }
+
         private void Shoot(GameTime gameTime)
         {
-            if (!_isShooting)
+            if (!_isShootingBullets)
             {
                 CreateBullets();
-                _isShooting = true;
-                _lastShotAt = gameTime.TotalGameTime;
-                NotifyEvent(new GameplayEvents.PlayerShoots());
+                _isShootingBullets = true;
+                _lastBulletShotAt = gameTime.TotalGameTime;
+
+                NotifyEvent(new GameplayEvents.PlayerShootsBullets());
+            }
+
+            if (!_isShootingMissile)
+            {
+                CreateMissile();
+                _isShootingMissile = true;
+                _lastMissileShotAt = gameTime.TotalGameTime;
+
+                NotifyEvent(new GameplayEvents.PlayerShootsMissile());
             }
 
         }
@@ -141,6 +181,14 @@ namespace MonoGameLearning.States.Gameplay
 
             AddGameObject(bulletSpriteLeft);
             AddGameObject(bulletSpriteRight);
+        }
+
+        private void CreateMissile()
+        {
+            var missileSprite = new MissileSprite(_missileTexture, _exhaustTexture);
+            missileSprite.Position = new Vector2(_playerSprite.Position.X + 33, _playerSprite.Position.Y - 25);
+            _missileList.Add(missileSprite);
+            AddGameObject(missileSprite);
         }
 
         private void KeepPlayerInBounds()
@@ -166,7 +214,7 @@ namespace MonoGameLearning.States.Gameplay
             }
         }
 
-        public override void SetInputManager()
+        protected override void SetInputManager()
         {
             InputManager = new InputManager(new GameplayInputMapper());
         }

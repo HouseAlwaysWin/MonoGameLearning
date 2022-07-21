@@ -14,7 +14,7 @@ namespace MonoGameLearning.Objects.Base
         public int Width { get { return _texture.Width; } }
         public int Height { get { return _texture.Height; } }
 
-        public Vector2 Position
+        public virtual Vector2 Position
         {
             get { return _position; }
             set { _position = value; }

@@ -41,7 +41,7 @@ namespace MonoGameLearning.Engine.States
             UpdateGameState(gameTime);
             _soundManager.PlaySoundtrack();
         }
-        public abstract void SetInputManager();
+        protected abstract void SetInputManager();
 
         public void UnloadContent()
         {

@@ -10,7 +10,7 @@ namespace MonoGameLearning.Engine.Sound
     {
         private int _soundtrackIndex = -1;
         private List<SoundEffectInstance> _soundtracks = new List<SoundEffectInstance>();
-        private Dictionary<Type, SoundEffect> _soundBank = new Dictionary<Type, SoundEffect>();
+        private Dictionary<Type, SoundBankItem> _soundBank = new Dictionary<Type, SoundBankItem>();
 
         public void SetSoundtrack(List<SoundEffectInstance> tracks)
         {
@@ -23,7 +23,7 @@ namespace MonoGameLearning.Engine.Sound
             if (_soundBank.ContainsKey(gameEvent.GetType()))
             {
                 var sound = _soundBank[gameEvent.GetType()];
-                sound.Play();
+                sound.Sound.Play();
             }
         }
 
@@ -53,7 +53,12 @@ namespace MonoGameLearning.Engine.Sound
 
         public void RegisterSound(BaseGameStateEvent gameEvent, SoundEffect sound)
         {
-            _soundBank.Add(gameEvent.GetType(), sound);
+            RegisterSound(gameEvent, sound, 1.0f, 0.0f, 0.0f);
+        }
+
+        internal void RegisterSound(BaseGameStateEvent gameEvent, SoundEffect sound, float volume, float pitch, float pan)
+        {
+            _soundBank.Add(gameEvent.GetType(), new SoundBankItem(sound, new SoundAttributes(volume, pitch, pan)));
         }
     }
 }

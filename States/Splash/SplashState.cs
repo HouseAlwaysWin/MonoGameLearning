@@ -15,7 +15,7 @@ namespace MonoGameLearning.Splash.Gameplay
         {
             // TODO: Add Content Loading
 
-            AddGameObject(new SplashImage(LoadTexture("splash")));
+            AddGameObject(new SplashImage(LoadTexture("png/splash")));
         }
 
         public override void HandleInput(GameTime gameTime)
@@ -28,7 +28,7 @@ namespace MonoGameLearning.Splash.Gameplay
             }
         }
 
-        public override void SetInputManager()
+        protected override void SetInputManager()
         {
             InputManager = new InputManager(new SplashInputMapper());
         }
