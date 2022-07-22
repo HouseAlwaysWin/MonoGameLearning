@@ -32,7 +32,7 @@ namespace MonoGameLearning
 
             // _graphics.IsFullScreen = true;
             Content.RootDirectory = "Content";
-            // IsMouseVisible = true;
+            IsMouseVisible = true;
 
             _firstGameState = firstGameState;
             _designedResolutionHeight = height;

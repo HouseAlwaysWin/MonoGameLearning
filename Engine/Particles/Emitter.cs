@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLearning.Engine.Particles.EmitterTypes;
-using MonoGameLearning.Objects.Base;
+using MonoGameLearning.Engine.Objects;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +15,9 @@ namespace MonoGameLearning.Engine.Particles
         private IEmitterType _emitterType;
         private int _nbParticleEmittedPerUpdate = 0;
         private int _maxNbParticle = 0;
+        private bool _active = true;
+
+        public int Age { get; set; }
 
         public Emitter(Texture2D texture, Vector2 position, EmitterParticleState particleState, IEmitterType emitterType, int nbParticleEmittedPerUpdate, int maxParticles)
         {
@@ -24,6 +27,7 @@ namespace MonoGameLearning.Engine.Particles
             _nbParticleEmittedPerUpdate = nbParticleEmittedPerUpdate;
             _maxNbParticle = maxParticles;
             Position = position;
+            Age = 0;
         }
 
         public void Update(GameTime gameTime)
@@ -43,6 +47,8 @@ namespace MonoGameLearning.Engine.Particles
 
                 particleNode = nextNode;
             }
+
+            Age++;
         }
 
         public override void Render(SpriteBatch spriteBatch)
@@ -53,6 +59,11 @@ namespace MonoGameLearning.Engine.Particles
             {
                 spriteBatch.Draw(_texture, particle.Position, sourceRectangle, Color.White * particle.Opacity, 0.0f, new Vector2(0, 0), particle.Scale, SpriteEffects.None, zIndex);
             }
+        }
+
+        public void Deactivate()
+        {
+            _active = false;
         }
 
         private void EmitParticles()

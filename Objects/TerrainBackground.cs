@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoGameLearning.Objects.Base;
+using MonoGameLearning.Engine.Objects;
 
 namespace MonoGameLearning.Objects
 {

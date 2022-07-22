@@ -10,7 +10,9 @@ using MonoGameLearning.Engine.Input;
 using MonoGameLearning.Engine.States;
 using MonoGameLearning.Enum;
 using MonoGameLearning.Objects;
-using MonoGameLearning.Objects.Base;
+using MonoGameLearning.Engine.Objects;
+using MonoGameLearning.States.Particles;
+using System.Threading.Tasks;
 
 namespace MonoGameLearning.States.Gameplay
 {
@@ -22,26 +24,40 @@ namespace MonoGameLearning.States.Gameplay
         private const string BackgroundTexture = "png/Barren";
         private const string ExhaustTexture = "png/Cloud001";
         private const string MissileTexture = "png/Missile05";
-        private PlayerSprite _playerSprite;
+        private const string ChopperTexture = "png/chopper-44x99";
+        private const string ExplosionTexture = "png/explosion";
+        private const int MaxExplosionAge = 600;
+        private const int ExplosionActiveLength = 75;
+        private Texture2D _chopperTexture;
         // private BulletSprite _bulletSprite;
         private Texture2D _bulletTexture;
-        private List<BulletSprite> _bulletList;
         private Texture2D _missileTexture;
         private Texture2D _exhaustTexture;
-        private bool _isShootingMissile;
+        private Texture2D _explosionTexture;
+
+        private PlayerSprite _playerSprite;
         private List<MissileSprite> _missileList;
+        private List<ExplosionEmitter> _explosionList = new List<ExplosionEmitter>();
+        private List<ChopperSprite> _enemyList = new List<ChopperSprite>();
+        private List<BulletSprite> _bulletList;
+        private ChopperGenerator _chopperGenerator;
         private bool _isShootingBullets;
+        private bool _isShootingMissile;
+        private bool _playerDead;
         private TimeSpan _lastBulletShotAt;
         private TimeSpan _lastMissileShotAt;
 
         public override void LoadContent()
         {
             _playerSprite = new PlayerSprite(LoadTexture(PlayerFighter));
-            _bulletTexture = LoadTexture(BulletTexture);
             _bulletList = new List<BulletSprite>();
             _missileList = new List<MissileSprite>();
+
+            _bulletTexture = LoadTexture(BulletTexture);
             _missileTexture = LoadTexture(MissileTexture);
             _exhaustTexture = LoadTexture(ExhaustTexture);
+            _explosionTexture = LoadTexture(ExplosionTexture);
+            _chopperTexture = LoadTexture(ChopperTexture);
 
 
             AddGameObject(new TerrainBackground(LoadTexture(BackgroundTexture)));
@@ -60,8 +76,8 @@ namespace MonoGameLearning.States.Gameplay
 
             var track1 = LoadSound("music/FutureAmbient_1").CreateInstance();
             var track2 = LoadSound("music/FutureAmbient_2").CreateInstance();
-            _soundManager.SetSoundtrack(new List<SoundEffectInstance>() { track1, track2 });
-
+            // _soundManager.SetSoundtrack(new List<SoundEffectInstance>() { track1, track2 });
+            ResetGame();
         }
 
         public override void UpdateGameState(GameTime gameTime)
@@ -87,12 +103,29 @@ namespace MonoGameLearning.States.Gameplay
                 _isShootingMissile = false;
             }
 
+            UpdateExplosions(gameTime);
+            RegulateShootingRate(gameTime);
+            DetectCollisions();
+
             _bulletList = CleanObjects(_bulletList);
             _missileList = CleanObjects(_missileList);
+            _enemyList = CleanObjects(_enemyList);
         }
 
+        private void RegulateShootingRate(GameTime gameTime)
+        {
+            // can't shoot bullets more than every 0.2 second
+            if (_lastBulletShotAt != null && gameTime.TotalGameTime - _lastBulletShotAt > TimeSpan.FromSeconds(0.2))
+            {
+                _isShootingBullets = false;
+            }
 
-
+            // can't shoot missiles more than every 1 second
+            if (_lastMissileShotAt != null && gameTime.TotalGameTime - _lastMissileShotAt > TimeSpan.FromSeconds(1.0))
+            {
+                _isShootingMissile = false;
+            }
+        }
         public override void HandleInput(GameTime gameTime)
         {
             InputManager.GetCommands(cmd =>
@@ -102,44 +135,157 @@ namespace MonoGameLearning.States.Gameplay
                     NotifyEvent(new BaseGameStateEvent.GameQuit());
                 }
 
-                if (cmd is GameplayInputCommand.PlayerMoveLeft)
+                if (cmd is GameplayInputCommand.PlayerMoveLeft && !_playerDead)
                 {
                     _playerSprite.MoveLeft();
                     KeepPlayerInBounds();
                 }
 
-                if (cmd is GameplayInputCommand.PlayerMoveRight)
+                if (cmd is GameplayInputCommand.PlayerMoveRight && !_playerDead)
                 {
                     _playerSprite.MoveRight();
                     KeepPlayerInBounds();
                 }
 
-                if (cmd is GameplayInputCommand.PlayerShoots)
+                if (cmd is GameplayInputCommand.PlayerShoots && !_playerDead)
                 {
                     Shoot(gameTime);
                 }
             });
-
         }
 
-        private List<T> CleanObjects<T>(List<T> objectList) where T : BaseGameObject
+        private void ResetGame()
         {
-            List<T> listOfItemsToKeep = new List<T>();
-            foreach (T item in objectList)
+            if (_chopperGenerator != null)
             {
-                var stillOnScreen = item.Position.Y > -50;
-
-                if (stillOnScreen)
-                {
-                    listOfItemsToKeep.Add(item);
-                }
-                else
-                {
-                    RemoveGameObject(item);
-                }
+                _chopperGenerator.StopGenerating();
             }
 
-            return listOfItemsToKeep;
+            foreach (var bullet in _bulletList)
+            {
+                RemoveGameObject(bullet);
+            }
+
+            foreach (var missile in _missileList)
+            {
+                RemoveGameObject(missile);
+            }
+
+            foreach (var chopper in _enemyList)
+            {
+                RemoveGameObject(chopper);
+            }
+
+            foreach (var explosion in _explosionList)
+            {
+                RemoveGameObject(explosion);
+            }
+
+            _bulletList = new List<BulletSprite>();
+            _missileList = new List<MissileSprite>();
+            _explosionList = new List<ExplosionEmitter>();
+            _enemyList = new List<ChopperSprite>();
+
+            _chopperGenerator = new ChopperGenerator(_chopperTexture, 4, AddChopper);
+            _chopperGenerator.GenerateChoppers();
+
+            AddGameObject(_playerSprite);
+
+            // position the player in the middle of the screen, at the bottom, leaving a slight gap at the bottom
+            var playerXPos = _viewportWidth / 2 - _playerSprite.Width / 2;
+            var playerYPos = _viewportHeight - _playerSprite.Height - 30;
+            _playerSprite.Position = new Vector2(playerXPos, playerYPos);
+
+            _playerDead = false;
+        }
+
+        private void AddChopper(ChopperSprite chopper)
+        {
+            chopper.OnObjectChanged += _chopperSprite_OnObjectChanged;
+            _enemyList.Add(chopper);
+            AddGameObject(chopper);
+        }
+
+        private void _chopperSprite_OnObjectChanged(object sender, BaseGameStateEvent e)
+        {
+            var chopper = (ChopperSprite)sender;
+            switch (e)
+            {
+                case GameplayEvents.EnemyLostLife ge:
+                    if (ge.CurrentLife <= 0)
+                    {
+                        AddExplosion(new Vector2(chopper.Position.X - 40, chopper.Position.Y - 40));
+                        chopper.Destroy();
+                    }
+                    break;
+            }
+        }
+
+        private void AddExplosion(Vector2 position)
+        {
+            var explosion = new ExplosionEmitter(_explosionTexture, position);
+            AddGameObject(explosion);
+            _explosionList.Add(explosion);
+        }
+
+        private void UpdateExplosions(GameTime gameTime)
+        {
+            foreach (var explosion in _explosionList)
+            {
+                explosion.Update(gameTime);
+
+                if (explosion.Age > ExplosionActiveLength)
+                {
+                    explosion.Deactivate();
+                }
+
+                if (explosion.Age > MaxExplosionAge)
+                {
+                    RemoveGameObject(explosion);
+                }
+            }
+        }
+
+        private void DetectCollisions()
+        {
+            var bulletCollisionDetector = new AABBCollisionDetector<BulletSprite, ChopperSprite>(_bulletList);
+            var missileCollisionDetector = new AABBCollisionDetector<MissileSprite, ChopperSprite>(_missileList);
+            var playerCollisionDetector = new AABBCollisionDetector<ChopperSprite, PlayerSprite>(_enemyList);
+
+            bulletCollisionDetector.DetectCollisions(_enemyList, (bullet, chopper) =>
+            {
+                var hitEvent = new GameplayEvents.ChopperHitBy(bullet);
+                chopper.OnNotify(hitEvent);
+                _soundManager.OnNotify(hitEvent);
+                bullet.Destroy();
+            });
+
+            missileCollisionDetector.DetectCollisions(_enemyList, (missile, chopper) =>
+            {
+                var hitEvent = new GameplayEvents.ChopperHitBy(missile);
+                chopper.OnNotify(hitEvent);
+                _soundManager.OnNotify(hitEvent);
+                missile.Destroy();
+            });
+
+            if (!_playerDead)
+            {
+                playerCollisionDetector.DetectCollisions(_playerSprite, (chopper, player) =>
+                {
+                    KillPlayer();
+                });
+            }
+        }
+
+        private async void KillPlayer()
+        {
+            _playerDead = true;
+
+            AddExplosion(_playerSprite.Position);
+            RemoveGameObject(_playerSprite);
+
+            await Task.Delay(TimeSpan.FromSeconds(2));
+            ResetGame();
         }
 
         private void Shoot(GameTime gameTime)
@@ -218,5 +364,27 @@ namespace MonoGameLearning.States.Gameplay
         {
             InputManager = new InputManager(new GameplayInputMapper());
         }
+
+        private List<T> CleanObjects<T>(List<T> objectList) where T : BaseGameObject
+        {
+            List<T> listOfItemsToKeep = new List<T>();
+            foreach (T item in objectList)
+            {
+                var stillOnScreen = item.Position.Y > -50;
+
+                if (stillOnScreen)
+                {
+                    listOfItemsToKeep.Add(item);
+                }
+                else
+                {
+                    RemoveGameObject(item);
+                }
+            }
+
+            return listOfItemsToKeep;
+        }
+
+
     }
 }

@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGameLearning.Enum;
-using MonoGameLearning.Objects.Base;
+using MonoGameLearning.Engine.Objects;
 using Microsoft.Xna.Framework;
 using MonoGameLearning.Engine.Input;
 using Microsoft.Xna.Framework.Audio;
@@ -17,7 +17,9 @@ namespace MonoGameLearning.Engine.States
 {
     public abstract class BaseGameState
     {
-        private const string FallbackTexture = "Empty";
+        private const string FallbackTexture = "png/Empty";
+        private const string FallbackSong = "sounds/empty";
+        protected bool _debug = true;
         private ContentManager _contentManager;
         protected int _viewportHeight;
         protected int _viewportWidth;
@@ -97,6 +99,11 @@ namespace MonoGameLearning.Engine.States
         {
             foreach (var gameObject in _gameObjects.OrderBy(a => a.zIndex))
             {
+                if (_debug)
+                {
+                    gameObject.RenderBoundingBoxes(spriteBatch);
+                }
+
                 gameObject.Render(spriteBatch);
             }
         }

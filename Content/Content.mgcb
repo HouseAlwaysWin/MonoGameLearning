@@ -13,12 +13,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../assets/music/FutureAmbient_1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/music/FutureAmbient_1.wav;music/FutureAmbient_1.wav
-
 #begin ../Assets/music/FutureAmbient_1.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -30,12 +24,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:../Assets/music/FutureAmbient_1.wav;music/FutureAmbient_1.wav
-
-#begin ../assets/music/FutureAmbient_2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/music/FutureAmbient_2.wav;music/FutureAmbient_2.wav
 
 #begin ../Assets/music/FutureAmbient_2.wav
 /importer:WavImporter
@@ -49,12 +37,6 @@
 /processorParam:Quality=Best
 /build:../Assets/music/FutureAmbient_2.wav;music/FutureAmbient_2.wav
 
-#begin ../assets/music/FutureAmbient_3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/music/FutureAmbient_3.wav;music/FutureAmbient_3.wav
-
 #begin ../Assets/music/FutureAmbient_3.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -67,12 +49,6 @@
 /processorParam:Quality=Best
 /build:../Assets/music/FutureAmbient_3.wav;music/FutureAmbient_3.wav
 
-#begin ../assets/music/FutureAmbient_4.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/music/FutureAmbient_4.wav;music/FutureAmbient_4.wav
-
 #begin ../Assets/music/FutureAmbient_4.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -84,18 +60,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:../Assets/music/FutureAmbient_4.wav;music/FutureAmbient_4.wav
-
-#begin ../assets/png/Barren.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/png/Barren.png;png/Barren.png
 
 #begin ../Assets/png/Barren.png
 /importer:TextureImporter
@@ -121,18 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/png/Barren.png;png/Barren.png
 
-#begin ../assets/png/bullet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/png/bullet.png;png/bullet.png
-
 #begin ../Assets/png/bullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -156,6 +108,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../Assets/png/bullet.png;png/bullet.png
+
+#begin ../Assets/png/chopper-44x99.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../Assets/png/chopper-44x99.png;png/chopper-44x99.png
 
 #begin ../Assets/png/Cloud001.png
 /importer:TextureImporter
@@ -169,7 +133,7 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/png/Cloud001.png;png/Cloud001.png
 
-#begin ../assets/png/Empty.png
+#begin ../Assets/png/Cloud001.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -179,7 +143,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../assets/png/Empty.png;png/Empty.png
+/build:../Assets/png/Cloud001.png;png/Cloud001.png
 
 #begin ../Assets/png/Empty.png
 /importer:TextureImporter
@@ -205,7 +169,7 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/png/Empty.png;png/Empty.png
 
-#begin ../assets/png/Fighter.png
+#begin ../Assets/png/explosion.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -215,7 +179,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../assets/png/Fighter.png;png/Fighter.png
+/build:../Assets/png/explosion.png;png/explosion.png
 
 #begin ../Assets/png/Fighter.png
 /importer:TextureImporter
@@ -253,7 +217,7 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/png/Missile05.png;png/Missile05.png
 
-#begin ../assets/png/splash.png
+#begin ../Assets/png/Missile05.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -263,7 +227,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:../assets/png/splash.png;png/splash.png
+/build:../Assets/png/Missile05.png;png/Missile05.png
 
 #begin ../Assets/png/splash.png
 /importer:TextureImporter
@@ -289,18 +253,6 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/png/splash.png;png/splash.png
 
-#begin ../assets/psd/Barren.psd
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/psd/Barren.psd;psd/Barren.psd
-
 #begin ../Assets/psd/Barren.psd
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -324,18 +276,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../Assets/psd/Barren.psd;psd/Barren.psd
-
-#begin ../assets/psd/Empty.psd
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/psd/Empty.psd;psd/Empty.psd
 
 #begin ../Assets/psd/Empty.psd
 /importer:TextureImporter
@@ -361,18 +301,6 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/psd/Empty.psd;psd/Empty.psd
 
-#begin ../assets/psd/Fighter.psd
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/psd/Fighter.psd;psd/Fighter.psd
-
 #begin ../Assets/psd/Fighter.psd
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -396,18 +324,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:../Assets/psd/Fighter.psd;psd/Fighter.psd
-
-#begin ../assets/psd/splash.psd
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../assets/psd/splash.psd;psd/splash.psd
 
 #begin ../Assets/psd/splash.psd
 /importer:TextureImporter
@@ -433,12 +349,6 @@
 /processorParam:TextureFormat=Color
 /build:../Assets/psd/splash.psd;psd/splash.psd
 
-#begin ../assets/sounds/bullet.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/sounds/bullet.wav;sounds/bulletSound.wav
-
 #begin ../Assets/sounds/bullet.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -451,12 +361,6 @@
 /processorParam:Quality=Best
 /build:../Assets/sounds/bullet.wav;sounds/bullet.wav
 
-#begin ../assets/sounds/empty.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:../assets/sounds/empty.wav;sounds/emptySound.wav
-
 #begin ../Assets/sounds/empty.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -468,6 +372,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:../Assets/sounds/empty.wav;sounds/empty.wav
+
+#begin ../Assets/sounds/missile.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:../Assets/sounds/missile.wav;sounds/missile.wav
 
 #begin ../Assets/sounds/missile.wav
 /importer:WavImporter
