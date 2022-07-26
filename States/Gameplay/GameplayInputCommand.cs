@@ -10,5 +10,6 @@ namespace MonoGameLearning.States.Gameplay
         public class PlayerMoveLeft : GameplayInputCommand { }
         public class PlayerMoveRight : GameplayInputCommand { }
         public class PlayerShoots : GameplayInputCommand { }
+        public class PlayerStopsMoving : GameplayInputCommand { }
     }
 }

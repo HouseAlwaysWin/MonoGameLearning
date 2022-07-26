@@ -64,7 +64,7 @@ namespace MonoGameLearning.States.Gameplay
                 };
 
                 var chopper = new ChopperSprite(_texture, path);
-                chopper.Position = new Vector2(100, 100);
+                chopper.Position = new Vector2(-200, 100);
                 _chopperHandler(chopper);
             }
             else

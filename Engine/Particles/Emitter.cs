@@ -32,7 +32,10 @@ namespace MonoGameLearning.Engine.Particles
 
         public void Update(GameTime gameTime)
         {
-            EmitParticles();
+            if (_active)
+            {
+                EmitParticles();
+            }
 
             var particleNode = _activeParticles.First;
             while (particleNode != null)

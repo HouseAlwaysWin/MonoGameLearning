@@ -23,8 +23,8 @@ namespace MonoGameLearning.Engine.Objects
         }
         public int zIndex;
         public event EventHandler<BaseGameStateEvent> OnObjectChanged;
-        public int Width { get { return _texture.Width; } }
-        public int Height { get { return _texture.Height; } }
+        public virtual int Width { get { return _texture.Width; } }
+        public virtual int Height { get { return _texture.Height; } }
         public bool Destroyed { get; private set; }
 
         public virtual Vector2 Position

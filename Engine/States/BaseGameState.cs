@@ -19,7 +19,7 @@ namespace MonoGameLearning.Engine.States
     {
         private const string FallbackTexture = "png/Empty";
         private const string FallbackSong = "sounds/empty";
-        protected bool _debug = true;
+        protected bool _debug = false;
         private ContentManager _contentManager;
         protected int _viewportHeight;
         protected int _viewportWidth;
@@ -67,6 +67,12 @@ namespace MonoGameLearning.Engine.States
             return _contentManager.Load<SoundEffect>(soundName);
         }
 
+
+        protected SpriteFont LoadFont(string fontName)
+        {
+            return _contentManager.Load<SpriteFont>(fontName);
+        }
+
         public abstract void HandleInput(GameTime gameTime);
 
         public event EventHandler<BaseGameState> OnStateSwitched;
@@ -95,7 +101,7 @@ namespace MonoGameLearning.Engine.States
             _gameObjects.Add(gameObject);
         }
 
-        public void Render(SpriteBatch spriteBatch)
+        public virtual void Render(SpriteBatch spriteBatch)
         {
             foreach (var gameObject in _gameObjects.OrderBy(a => a.zIndex))
             {

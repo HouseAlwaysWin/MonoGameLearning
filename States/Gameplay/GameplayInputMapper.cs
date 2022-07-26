@@ -16,20 +16,21 @@ namespace MMonoGameLearning.States.Gameplay
             {
                 commands.Add(new GameplayInputCommand.GameExit());
             }
-
-            if (state.IsKeyDown(Keys.Left))
+            else if (state.IsKeyDown(Keys.Left))
             {
                 commands.Add(new GameplayInputCommand.PlayerMoveLeft());
             }
-
-            if (state.IsKeyDown(Keys.Right))
+            else if (state.IsKeyDown(Keys.Right))
             {
                 commands.Add(new GameplayInputCommand.PlayerMoveRight());
             }
-
-            if (state.IsKeyDown(Keys.Space))
+            else if (state.IsKeyDown(Keys.Space))
             {
                 commands.Add(new GameplayInputCommand.PlayerShoots());
+            }
+            else
+            {
+                commands.Add(new GameplayInputCommand.PlayerStopsMoving());
             }
 
             return commands;
